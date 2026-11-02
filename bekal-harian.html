@@ -162,7 +162,7 @@ function vDash(){const s=st(today),f=first();
  let heat='MSSRKJS'.split('').map(c=>`<div class="h">${c}</div>`).join('')+'<div class="h"></div>'.repeat(off);
  for(let i=1;i<=dim;i++){const x=today.slice(0,8)+String(i).padStart(2,'0');const on=x<=today&&x>=f,p=on?st(x).pct:0;
   heat+=`<div style="${on?`background:rgba(242,122,168,${.12+.88*p/100});color:${p>55?'#fff':'#a15b7b'}`:''}" title="${p}%">${i}</div>`}
- const st30=Math.max(f,addDays(today,-29));let n30=0;for(let x=st30;x<=today;x=addDays(x,1))n30++;
+ const d29=addDays(today,-29),st30=f>d29?f:d29;let n30=0;for(let x=st30;x<=today;x=addDays(x,1))n30++;
  const ac=S.daily.map(a=>{let c=0;for(let x=st30;x<=today;x=addDays(x,1)){if((S.log[x]||{d:{}}).d[a.id])c++}return{n:a.name,c,p:Math.round(c/n30*100)}}).sort((a,b)=>b.p-a.p);
  return`<div class="card hero"><h1>Dashboard pencapaian 🌷</h1><div class="msg" style="margin-top:6px">${streak>0?`Kamu konsisten ${streak} hari berturut-turut (≥70%). Barakallah!`:'Mulai streak barumu hari ini, ya 🤍'}</div></div>
  <div class="grid4">
@@ -172,8 +172,8 @@ function vDash(){const s=st(today),f=first();
  <div class="stat" style="background:var(--peach)"><b>${m1==null?'-':m1+'%'}</b><span>Rata-rata bulan ini</span>${dl(m1,m0)}</div></div>
  <div class="card"><h2>14 hari terakhir</h2><div class="bars">${bars}</div></div>
  <div class="card"><h2>Kalender capaian ${fmt(today,{month:'long',year:'numeric'})}</h2><div class="heat">${heat}</div><div class="msg" style="color:var(--soft);margin-top:8px;font-size:12px">Makin pekat pink, makin tinggi capaian hari itu.</div></div>
- <div class="card"><h2>Konsistensi per amalan <small style="color:var(--soft);font-size:12px">(${n30} hari terakhir)</small></h2>
- ${ac.map((a,i)=>`<div class="ac"><div class="t"><span>${i<3?'🌟 ':''}${esc(a.n)}</span><span>${a.c} hari • ${a.p}%</span></div><div class="pb"><i style="width:${a.p}%"></i></div></div>`).join('')}</div>`}
+ <div class="card"><h2>Konsistensi per amalan</h2><div class="msg" style="color:var(--soft);font-size:12px;margin-bottom:12px">Berapa hari amalan ini kamu centang dari ${n30} hari terakhir (maks. 30 hari sejak mulai memakai aplikasi). Makin penuh bar, makin rutin. 🌟 = 3 amalan paling rutin.</div>
+ ${ac.map((a,i)=>`<div class="ac"><div class="t"><span>${i<3?'🌟 ':''}${esc(a.n)}</span><span>${a.c} dari ${n30} hari • ${a.p}%</span></div><div class="pb"><i style="width:${a.p}%"></i></div></div>`).join('')}</div>`}
 
 let repM=today.slice(0,7);
 function monthDays(m){const[y,mo]=m.split('-').map(Number),n=new Date(y,mo,0).getDate();return Array.from({length:n},(_,i)=>m+'-'+String(i+1).padStart(2,'0')).filter(d=>d<=today)}
